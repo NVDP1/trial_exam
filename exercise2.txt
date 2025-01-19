@@ -1,0 +1,23 @@
+UNF:
+db(staffNo,densitstName,PatientNo,patientName,appointment_date,appointment_time,surgeryNo)
+
+1NF:
+all data is present
+Primary is defined
+db(*staffNo*,dentistName,PatientNo,patientName,*ApptDate*,*ApptTime*,surgeryNo)
+
+2NF:
+No partial dependencies
+dentistName is only depedent on staffNo
+PatientName is only depdent on patientNo
+SurgeryNo is only dependent on staffNo and apptDate
+surgery(*staffNo,ApptDate,surgeryNo)
+staffName(*staffNo*,dentistName)
+main (*staffNo*,patientNo,patient_name,*appointment date*,appointment_time*)
+
+3NF:
+NO transative dependencies
+staff =2Nf
+surgery = 2NF
+main
+paitnet(patientNo,patientName)
