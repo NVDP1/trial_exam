@@ -25,7 +25,39 @@ averagePrice
 mysql vacation -e select type,sum(price) as averagePrice from room where type="double"
 type	averagePrice
 double	160.00
-mysql vacation -e select guestno,count(guestno),datefrom,dateto from booking where month(datefrom)=05 or month(dateto)=05 group by guestno
 mysql vacation -e select count(distinct(guestno)) from booking where month(datefrom)=05 or month(dateto)=05
 count(distinct(guestno))
 6
+mysql vacation -e select type,price,hotel.hotelname from room JOIN hotel on room.hotelno=hotel.hotelno where hotel.hotelname="The Tower Hotel"
+type	price	hotelname
+single	19.00	The Tower Hotel
+double	29.00	The Tower Hotel
+family	39.00	The Tower Hotel
+mysql vacation -e select booking.guestno,hotel.hotelname from booking JOIN hotel on booking.hotelno=hotel.hotelno where hotel.hotelname="The Tower Hotel"
+guestno	hotelname
+10001	The Tower Hotel
+10001	The Tower Hotel
+10002	The Tower Hotel
+10004	The Tower Hotel
+10005	The Tower Hotel
+mysql vacation -e select guest.guestname,room.price,room.type,hotel.hotelname,booking.roomno from room JOIN hotel on room.hotelno=hotel.hotelno JOIN booking ON room.roomno=booking.roomno JOIN guest ON booking.guestno=guest.guestno where hotel.hotelname="The Tower Hotel" 
+guestname	price	type	hotelname	roomno
+John Kay	19.00	single	The Tower Hotel	501
+Carol Farrel	19.00	single	The Tower Hotel	501
+Mike Ritchie	29.00	double	The Tower Hotel	601
+Joe Keogh	29.00	double	The Tower Hotel	601
+John Kay	39.00	family	The Tower Hotel	701
+mysql vacation -e select sum(room.price) from room JOIN hotel on room.hotelno=hotel.hotelno JOIN booking ON room.roomno=booking.roomno JOIN guest ON booking.guestno=guest.guestno where hotel.hotelname="The Tower Hotel" 
+sum(room.price)
+135.00
+mysql vacation -e select count(room.roomno),hotelname,city from hotel JOIN room ON hotel.hotelno=room.hotelno where city="London" group by hotelname
+count(room.roomno)	hotelname	city
+2	Omni Shoreham	London
+2	Phoenix Park	London
+3	The Tower Hotel	London
+mysql vacation -e select count(guestno),type,hotelname from hotel JOIN booking ON hotel.hotelno=booking.hotelno JOIN room on hotel.hotelno=room.hotelno where city="London" group by hotelname
+count(guestno)	type	hotelname
+2	single	Omni Shoreham
+2	single	Phoenix Park
+15	single	The Tower Hotel
+mysql vacation -e UPDATE room SET price=price*1.05
